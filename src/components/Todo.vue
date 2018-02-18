@@ -11,12 +11,18 @@
         </el-form-item>
       </el-form>
     </el-container>
+    <!-- todo-list component -->
+    <TodoList/>
   </div>
 </template>
 
 <script>
+import TodoList from '@/components/TodoList'
 import { mapActions } from 'vuex'
 export default {
+  components: {
+    TodoList
+  },
   data () {
     return {
       newTodo: ''

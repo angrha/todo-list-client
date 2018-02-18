@@ -4,7 +4,7 @@
   <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
     <el-menu :default-openeds="['1']">
       <el-submenu index="1">
-        <template slot="title"><i class="el-icon-message"></i>Navigator One</template>
+        <template slot="title"><i class="el-icon-menu"></i>Navigator One</template>
         <el-menu-item-group>
           <template slot="title">Group 1</template>
           <el-menu-item index="1-1">Option 1</el-menu-item>
@@ -19,7 +19,7 @@
         </el-submenu>
       </el-submenu>
       <el-submenu index="2">
-        <template slot="title"><i class="el-icon-menu"></i>Navigator Two</template>
+        <template slot="title"><i class="el-icon-more"></i>Navigator Two</template>
         <el-menu-item-group>
           <template slot="title">Group 1</template>
           <el-menu-item index="2-1">Option 1</el-menu-item>
@@ -64,8 +64,8 @@
       <span>Tom</span>
     </el-header>
     <!-- main content here -->
-    <el-main>
-      <todo-list></todo-list>
+    <el-main style="background-color: #eee;">
+      <Todo></Todo>
     </el-main>
   </el-container>
 </el-container>
@@ -76,7 +76,7 @@ import Todo from '@/components/Todo'
 export default {
   name: 'Home',
   components: {
-    'todo-list': Todo
+    Todo
   },
   methods: {
     handleOpen (key, keyPath) {

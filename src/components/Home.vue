@@ -73,18 +73,30 @@
 
 <script>
 import Todo from '@/components/Todo'
+import { mapActions } from 'vuex'
 export default {
   name: 'Home',
   components: {
     Todo
   },
   methods: {
+    ...mapActions([
+      'findAllTodos'
+    ]),
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath)
     }
+  },
+  watch: {
+    id: function () {
+      this.findAllTodos()
+    }
+  },
+  created () {
+    this.findAllTodos()
   }
 }
 </script>

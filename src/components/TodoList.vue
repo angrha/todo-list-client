@@ -1,29 +1,40 @@
 <template>
   <div>
-    <el-container>
-      <el-row :gutter="20">
-        <el-col :span="6" v-for="o in 6" :key="o">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span>{{'title ' + o }}</span>
-              <el-button class="el-icon-close" style="float: right; padding: 3px 0" type="text"></el-button>
-            </div>
-            <div v-for="o in 4" :key="o" class="text item">
-              <p>
-                <el-checkbox v-model="checked" style="float: left;"></el-checkbox>
-                {{'list item ' + o }}
-              </p>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
+    <el-container class="flx-cnt">
+      <el-card class="box-card" v-for="(todo, index) in todos" :key="todo._id">
+        <div slot="header" class="clearfix">
+          <span>{{'title ' + index }}</span>
+          <el-button class="el-icon-close" style="float: right; padding: 3px 0" type="text"></el-button>
+        </div>
+        <div v-for="t in todo.todos" :key="t._id" class="text item">
+          <p>
+            <el-checkbox style="float: left;"></el-checkbox>
+            {{t}}
+          </p>
+        </div>
+      </el-card>
     </el-container>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
-
+  computed: {
+    ...mapState([
+      'todos'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'findAllTodos'
+    ])
+  },
+  watch: {
+    id: function () {
+      this.findAllTodos()
+    }
+  }
 }
 </script>
 
@@ -40,7 +51,7 @@ export default {
 }
 
 .item {
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .clearfix:before,
@@ -52,8 +63,14 @@ export default {
   clear: both
 }
 
+.flx-cnt {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
 .box-card {
   width: 250px;
   margin-top: 4%;
+  margin-right: 0.5%;
 }
 </style>

@@ -13,17 +13,28 @@ const store = new Vuex.Store({
     todos: []
   },
   mutations: {
-    postTodo (state, payload) {
-      state.todos.push(payload)
+    getTodo (state, payload) {
+      console.log(payload, 'ini todo')
+      state.todos = payload
     }
   },
   actions: {
     addTodo ({commit}, payload) {
       axios.post(baseUrl + '/todos', {
-        title: payload
+        todos: payload
       })
         .then(response => {
-          commit('postTodo', response.data.todo)
+          console.log(response.data.todo)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    findAllTodos ({commit}) {
+      axios.get(baseUrl + '/todos')
+        .then(response => {
+          commit('getTodo', response.data.todos)
+          console.log(response.data.todos, 'ini axio')
         })
         .catch(err => {
           console.log(err)

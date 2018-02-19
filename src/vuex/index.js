@@ -70,10 +70,16 @@ const store = new Vuex.Store({
         })
     },
     mark ({ commit }, payload) {
-      console.log('masuk ke marrrrk')
-      payload.status = 'completed'
+      console.log(payload.status)
+      let stat = ''
+      if (payload.status) {
+        stat = 'completed'
+      } else {
+        stat = 'uncompleted'
+      }
+      console.log('masuk ke marrrrk', stat)
       axios.put(baseUrl + `/todos/${payload._id}/mark`, {
-        status: payload.status
+        status: stat
       })
         .then(response => {
           console.log(response.data, 'ini axios')

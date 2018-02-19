@@ -6,12 +6,15 @@
           <span >{{ todo.title }} - {{ index }}</span>
           <el-button class="el-icon-close" type="text" @click="removeTodo(todo)"> </el-button>
         </div>
-        <div :class="{completed: todo.status}" v-if="!editedTodo">
-          <el-checkbox
+        <div :class="{complete: todo.status}" v-if="!editedTodo">
+          <label for="check">
+            <el-checkbox
+            id="check"
             v-model="todo.status"
-            @click="mark(todo)"
+            @change="mark(todo)"
             style="float: left;">
           </el-checkbox>
+          </label>
           <p @dblclick="editTodo(todo)">
             {{todo.todos}}
           </p>
@@ -105,8 +108,8 @@ export default {
   padding: 3px 0
 }
 
-.completed {
+.complete {
   text-decoration: line-through;
-  color: #B3C0D1;
+  color: rgb(40, 89, 153);
 }
 </style>

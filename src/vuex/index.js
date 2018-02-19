@@ -14,7 +14,6 @@ const store = new Vuex.Store({
   },
   mutations: {
     postTodo (state, payload) {
-      console.log(payload, 'ini todo')
       state.todos.push(payload)
     },
     getTodo (state, payload) {
@@ -62,6 +61,19 @@ const store = new Vuex.Store({
       payload.todos = payload.todos.trim()
       axios.put(baseUrl + `/todos/${payload._id}`, {
         todos: payload.todos
+      })
+        .then(response => {
+          console.log(response.data, 'ini axios')
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    mark ({ commit }, payload) {
+      console.log('masuk ke marrrrk')
+      payload.status = 'completed'
+      axios.put(baseUrl + `/todos/${payload._id}/mark`, {
+        status: payload.status
       })
         .then(response => {
           console.log(response.data, 'ini axios')

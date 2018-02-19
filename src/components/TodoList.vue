@@ -3,11 +3,15 @@
     <el-container class="flx-cnt">
       <el-card class="box-card" v-for="(todo, index) in todos" :key="todo._id">
         <div slot="header" class="clearfix">
-          <span>{{'title ' + index }}</span>
+          <span >{{ todo.title }} - {{ index }}</span>
           <el-button class="el-icon-close" type="text" @click="removeTodo(todo)"> </el-button>
         </div>
-        <div v-if="!editedTodo">
-          <el-checkbox style="float: left;"></el-checkbox>
+        <div :class="{completed: todo.status}" v-if="!editedTodo">
+          <el-checkbox
+            v-model="todo.status"
+            @click="mark(todo)"
+            style="float: left;">
+          </el-checkbox>
           <p @dblclick="editTodo(todo)">
             {{todo.todos}}
           </p>
@@ -40,7 +44,8 @@ export default {
   methods: {
     ...mapActions([
       'removeTodo',
-      'finishEdit'
+      'finishEdit',
+      'mark'
     ]),
     editTodo (todo) {
       this.editedTodo = todo
@@ -98,5 +103,10 @@ export default {
 .el-icon-close{
   float: right;
   padding: 3px 0
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #B3C0D1;
 }
 </style>

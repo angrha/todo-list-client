@@ -1,13 +1,14 @@
 <template>
   <div>
-    <el-container style="height: 80px; border: 1px solid #eee;">
-      <el-form class="flx-td" @submit.prevent>
+    <el-container style="height: 80px;">
+      <el-form class="flx-td">
         <el-form-item >
           <el-input v-model="newTodo"
-          @keyup.enter.native="addTodo(newTodo)"
-          class="in-td"
-          placeholder="What needs to be done?"
-          autofocus></el-input>
+            @keyup.enter.native="submitTodo(newTodo)"
+            class="in-td"
+            placeholder="What needs to be done?"
+            autofocus>
+          </el-input>
         </el-form-item>
       </el-form>
     </el-container>
@@ -31,7 +32,11 @@ export default {
   methods: {
     ...mapActions([
       'addTodo'
-    ])
+    ]),
+    submitTodo (e) {
+      this.addTodo(e)
+      this.newTodo = ''
+    }
   }
 }
 </script>
@@ -45,7 +50,5 @@ export default {
 }
 .in-td {
   width: 200%;
-  border: solid 3px #eee;
-  border-radius: 3px;
 }
 </style>

@@ -4,7 +4,7 @@
       <el-card class="box-card" v-for="(todo, index) in todos" :key="todo._id">
         <div slot="header" class="clearfix">
           <span>{{'title ' + index }}</span>
-          <el-button class="el-icon-close" style="float: right; padding: 3px 0" type="text"></el-button>
+          <el-button class="el-icon-close" type="text" @click="removeTodo(todo)"> </el-button>
         </div>
         <div v-for="t in todo.todos" :key="t._id" class="text item">
           <p>
@@ -27,13 +27,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'findAllTodos'
+      'removeTodo'
     ])
-  },
-  watch: {
-    id: function () {
-      this.findAllTodos()
-    }
   }
 }
 </script>
@@ -72,5 +67,10 @@ export default {
   width: 250px;
   margin-top: 4%;
   margin-right: 0.5%;
+}
+
+.el-icon-close{
+  float: right;
+  padding: 3px 0
 }
 </style>

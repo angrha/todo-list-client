@@ -6,12 +6,19 @@
           <span>{{'title ' + index }}</span>
           <el-button class="el-icon-close" type="text" @click="removeTodo(todo)"> </el-button>
         </div>
-        <div v-for="t in todo.todos" :key="t._id" class="text item">
-          <p>
-            <el-checkbox style="float: left;"></el-checkbox>
-            {{t}}
+        <div v-if="!editedTodo">
+          <el-checkbox style="float: left;"></el-checkbox>
+          <p @dblclick="editTodo(todo)">
+            {{todo.todos}}
           </p>
         </div>
+        <el-input type="text"
+          v-if="editedTodo"
+          v-model="todo.todos"
+          @blur="doneEdit(todo)"
+          @keyup.enter.native="doneEdit(todo)">
+          <i class="el-icon-edit el-input__icon" slot="suffix"></i>
+        </el-input>
       </el-card>
     </el-container>
   </div>
@@ -20,6 +27,11 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 export default {
+  data () {
+    return {
+      editedTodo: null
+    }
+  },
   computed: {
     ...mapState([
       'todos'
@@ -27,8 +39,22 @@ export default {
   },
   methods: {
     ...mapActions([
-      'removeTodo'
-    ])
+      'removeTodo',
+      'finishEdit'
+    ]),
+    editTodo (todo) {
+      this.editedTodo = todo
+    },
+    doneEdit (todo) {
+      if (!this.editedTodo) {
+        return
+      }
+      this.finishEdit(todo)
+      this.editedTodo = null
+      if (!todo.todos) {
+        this.removeTodo(todo)
+      }
+    }
   }
 }
 </script>

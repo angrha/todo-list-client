@@ -18,19 +18,17 @@ const store = new Vuex.Store({
       state.todos.push(payload)
     },
     getTodo (state, payload) {
-      console.log(payload, 'ini todo')
       state.todos = payload
     },
     destroyTodo (state, payload) {
       let index = state.todos.findIndex(x => {
         return x === payload
       })
-      console.log(index, 'ini index')
       state.todos.splice(index, 1)
     }
   },
   actions: {
-    addTodo ({commit}, payload) {
+    addTodo ({ commit }, payload) {
       axios.post(baseUrl + '/todos', { // middleware off
         todos: payload
       })
@@ -41,11 +39,10 @@ const store = new Vuex.Store({
           console.log(err)
         })
     },
-    findAllTodos ({commit}) {
+    findAllTodos ({ commit }) {
       axios.get(baseUrl + '/todos')
         .then(response => {
           commit('getTodo', response.data.todos)
-          console.log(response.data.todos, 'ini axio')
         })
         .catch(err => {
           console.log(err)
@@ -56,6 +53,18 @@ const store = new Vuex.Store({
         .then(response => {
           console.log(response.data)
           commit('destroyTodo', payload)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    finishEdit ({ commit }, payload) { // middleware off
+      payload.todos = payload.todos.trim()
+      axios.put(baseUrl + `/todos/${payload._id}`, {
+        todos: payload.todos
+      })
+        .then(response => {
+          console.log(response.data, 'ini axios')
         })
         .catch(err => {
           console.log(err)

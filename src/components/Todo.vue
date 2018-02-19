@@ -3,11 +3,13 @@
     <el-container style="height: 80px;">
       <el-form class="flx-td">
         <el-form-item >
-          <el-input v-model="newTodo"
+          <el-input type="text"
+            v-model="newTodo"
             @keyup.enter.native="submitTodo(newTodo)"
             class="in-td"
             placeholder="What needs to be done?"
             autofocus>
+            <i class="el-icon-edit el-input__icon" slot="suffix"></i>
           </el-input>
         </el-form-item>
       </el-form>

@@ -10,6 +10,7 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b">
+      <!-- login -->
       <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-setting"></i>
@@ -46,15 +47,60 @@
             </el-button>
           </div>
         </el-form>
+        <!-- login with social media -->
         <el-submenu index="1-4">
           <template slot="title">Login With...</template>
           <el-menu-item index="1-4-1">item one</el-menu-item>
         </el-submenu>
       </el-submenu>
-      <el-menu-item index="2">
-        <i class="el-icon-tickets"></i>
-        <span>Sign Up</span>
-      </el-menu-item>
+      <!-- sign up -->
+      <el-submenu index="2">
+        <template slot="title">
+          <i class="el-icon-tickets"></i>
+          <span>Sign Up</span>
+        </template>
+        <el-form>
+          <el-menu-item-group title="Username">
+            <el-input
+              type="text"
+              style="width: 90%;"
+              size="small"
+              placeholder="Input Your Username"
+              v-model="formData.username"
+              clearable>
+            </el-input>
+          </el-menu-item-group>
+          <el-menu-item-group title="Email">
+            <el-input
+              type="email"
+              style="width: 90%;"
+              size="small"
+              placeholder="Input Your Email"
+              v-model="formData.email"
+              clearable>
+            </el-input>
+          </el-menu-item-group>
+          <el-menu-item-group title="Password">
+              <el-input
+              type="password"
+              style="width: 90%;"
+              size="small"
+              placeholder="Input Your Password"
+              v-model="formData.password"
+              clearable>
+            </el-input>
+          </el-menu-item-group>
+          <div class="flx-btn">
+            <el-button
+              @click="signup(formData)"
+              type="submit"
+              size="small"
+              class="btn-log">
+              Sign Up
+            </el-button>
+          </div>
+        </el-form>
+      </el-submenu>
       <el-menu-item index="3">
         <i class="el-icon-menu"></i>
         <span>Todo List</span>
@@ -98,6 +144,7 @@ export default {
     return {
       labelPosition: 'left',
       formData: {
+        username: '',
         email: '',
         password: ''
       }
@@ -106,15 +153,18 @@ export default {
   computed: {
     ...mapState([
       'login',
-      'user'
+      'user',
+      'clear'
     ])
   },
   methods: {
     ...mapActions([
       'findAllTodos',
       'signin',
+      'signup',
       'signout',
-      'checkLogin'
+      'checkLogin',
+      'getUser'
     ]),
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
@@ -126,6 +176,10 @@ export default {
   created () {
     this.findAllTodos()
     this.checkLogin()
+    this.getUser()
+    this.formData.username = ''
+    this.formData.email = ''
+    this.formData.password = ''
   }
 }
 </script>

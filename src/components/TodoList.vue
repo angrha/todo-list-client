@@ -49,8 +49,7 @@ export default {
     ...mapActions([
       'removeTodo',
       'finishEdit',
-      'mark',
-      'getUser'
+      'mark'
     ]),
     editTodo (todo) {
       this.editedTodo = todo
@@ -65,9 +64,6 @@ export default {
         this.removeTodo(todo)
       }
     }
-  },
-  updated () {
-    this.getUser()
   }
 }
 </script>

@@ -171,6 +171,25 @@ const store = new Vuex.Store({
         icon: 'info',
         button: 'next'
       })
+    },
+    signup ({ commit }, payload) {
+      console.log(payload.username, 'ini payload')
+      axios.post(baseUrl + '/users/signup', payload)
+        .then(response => {
+          swal({
+            text: 'Thanks for resgister',
+            icon: 'success',
+            button: 'next'
+          })
+        })
+        .catch(err => {
+          swal({
+            text: `${err.response.data.message}`,
+            icon: 'error',
+            button: 'next'
+          })
+          console.log(err)
+        })
     }
   }
 })

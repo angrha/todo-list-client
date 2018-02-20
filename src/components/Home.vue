@@ -106,6 +106,8 @@
         <span>Todo List</span>
       </el-menu-item>
     </el-menu>
+    <h3> {{ unique.quote }} </h3>
+    <h5> - {{ unique.author }} </h5>
   </el-aside>
   <!-- header -->
   <el-container>
@@ -154,7 +156,8 @@ export default {
     ...mapState([
       'login',
       'user',
-      'clear'
+      'clear',
+      'unique'
     ])
   },
   methods: {
@@ -164,7 +167,8 @@ export default {
       'signup',
       'signout',
       'checkLogin',
-      'getUser'
+      'getUser',
+      'uniqueFeature'
     ]),
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
@@ -177,6 +181,7 @@ export default {
     this.findAllTodos()
     this.checkLogin()
     this.getUser()
+    this.uniqueFeature()
     this.formData.username = ''
     this.formData.email = ''
     this.formData.password = ''

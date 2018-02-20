@@ -16,6 +16,10 @@ const store = new Vuex.Store({
     user: {
       id: null,
       username: null
+    },
+    unique: {
+      author: null,
+      quote: null
     }
   },
   mutations: {
@@ -37,6 +41,9 @@ const store = new Vuex.Store({
     loginUser (state, payload) {
       state.login = true
       state.user = payload
+    },
+    sendQuote (state, payload) {
+      state.unique = payload
     }
   },
   actions: {
@@ -81,6 +88,11 @@ const store = new Vuex.Store({
           commit('destroyTodo', payload)
         })
         .catch(err => {
+          swal({
+            text: `${err.response.data.message}`,
+            icon: 'error',
+            button: 'next'
+          })
           console.log(err)
         })
     },
@@ -118,6 +130,11 @@ const store = new Vuex.Store({
           console.log(response.data, 'ini axios')
         })
         .catch(err => {
+          swal({
+            text: `${err.response.data.message}`,
+            icon: 'error',
+            button: 'next'
+          })
           console.log(err)
         })
     },
@@ -189,6 +206,16 @@ const store = new Vuex.Store({
             button: 'next'
           })
           console.log(err)
+        })
+    },
+    uniqueFeature ({ commit }) {
+      axios.get('https://favqs.com/api/qotd')
+        .then(response => {
+          let objQuote = {
+            author: response.data.quote.author,
+            quote: response.data.quote.body
+          }
+          commit('sendQuote', objQuote)
         })
     }
   }

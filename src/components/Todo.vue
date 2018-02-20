@@ -21,7 +21,7 @@
 
 <script>
 import TodoList from '@/components/TodoList'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   components: {
     TodoList
@@ -30,6 +30,11 @@ export default {
     return {
       newTodo: ''
     }
+  },
+  computed: {
+    ...mapState([
+      'unique'
+    ])
   },
   methods: {
     ...mapActions([

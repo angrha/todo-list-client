@@ -76,7 +76,7 @@
           </el-button>
         </el-dropdown-menu>
       </el-dropdown>
-      <span v-if="login">Welcome {{ user }}</span>
+      <span v-if="login">Welcome {{ user.username }}</span>
     </el-header>
     <!-- main content here -->
     <el-main style="background-color: #545c64;">
@@ -113,8 +113,8 @@ export default {
     ...mapActions([
       'findAllTodos',
       'signin',
-      'checkLogin',
-      'signout'
+      'signout',
+      'checkLogin'
     ]),
     handleOpen (key, keyPath) {
       console.log(key, keyPath)

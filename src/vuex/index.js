@@ -13,7 +13,10 @@ const store = new Vuex.Store({
   state: {
     todos: [],
     login: false,
-    user: null
+    user: {
+      id: null,
+      username: null
+    }
   },
   mutations: {
     postTodo (state, payload) {
@@ -32,19 +35,29 @@ const store = new Vuex.Store({
       state.login = payload
     },
     loginUser (state, payload) {
+      state.login = true
       state.user = payload
-      console.log(state.user)
     }
   },
   actions: {
     addTodo ({ commit }, payload) {
-      axios.post(baseUrl + '/todos', { // middleware off
+      axios.post(baseUrl + '/todos', { // middleware on
         todos: payload
+      }, {
+        headers: {
+          token: localStorage.getItem(fancyTodo)
+        }
       })
         .then(response => {
           commit('postTodo', response.data.todo)
         })
         .catch(err => {
+          swal({
+            title: 'need login first',
+            text: `${err.response.data.message}`,
+            icon: 'warning',
+            button: 'next'
+          })
           console.log(err)
         })
     },
@@ -58,7 +71,11 @@ const store = new Vuex.Store({
         })
     },
     removeTodo ({ commit }, payload) {
-      axios.delete(baseUrl + `/todos/${payload._id}`) // middlewar off
+      axios.delete(baseUrl + `/todos/${payload._id}`, {
+        headers: {
+          token: localStorage.getItem(fancyTodo)
+        }
+      }) // middlewar on
         .then(response => {
           console.log(response.data)
           commit('destroyTodo', payload)
@@ -67,10 +84,14 @@ const store = new Vuex.Store({
           console.log(err)
         })
     },
-    finishEdit ({ commit }, payload) { // middleware off
+    finishEdit ({ commit }, payload) { // middleware on
       payload.todos = payload.todos.trim()
       axios.put(baseUrl + `/todos/${payload._id}`, {
         todos: payload.todos
+      }, {
+        headers: {
+          token: localStorage.getItem(fancyTodo)
+        }
       })
         .then(response => {
           console.log(response.data, 'ini axios')
@@ -88,6 +109,10 @@ const store = new Vuex.Store({
       }
       axios.put(baseUrl + `/todos/${payload._id}/mark`, {
         status: stat
+      }, {
+        headers: {
+          token: localStorage.getItem(fancyTodo)
+        }
       })
         .then(response => {
           console.log(response.data, 'ini axios')
@@ -100,8 +125,11 @@ const store = new Vuex.Store({
       axios.post(baseUrl + '/users/signin', payload)
         .then(response => {
           localStorage.setItem(fancyTodo, response.data.token)
-          commit('isLogin', true)
-          commit('loginUser', response.data.user)
+          let objUser = {
+            id: response.data.userId,
+            username: response.data.username
+          }
+          commit('loginUser', objUser)
         })
         .catch(err => {
           swal({
@@ -115,6 +143,23 @@ const store = new Vuex.Store({
       if (localStorage.getItem(fancyTodo)) {
         commit('isLogin', true)
       }
+    },
+    getUser ({ commit }) {
+      axios.get(baseUrl + '/users/user', {
+        headers: {
+          token: localStorage.getItem(fancyTodo)
+        }
+      })
+        .then(response => {
+          let objUser = {
+            id: response.data.userId,
+            username: response.data.username
+          }
+          commit('loginUser', objUser)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     signout ({ commit }) {
       console.log('masuk sini')

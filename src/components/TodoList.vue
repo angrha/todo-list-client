@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="login">
     <el-container class="flx-cnt">
       <el-card class="box-card" v-for="(todo, index) in todos" :key="todo._id">
         <div slot="header" class="clearfix">
@@ -41,14 +41,16 @@ export default {
   },
   computed: {
     ...mapState([
-      'todos'
+      'todos',
+      'login'
     ])
   },
   methods: {
     ...mapActions([
       'removeTodo',
       'finishEdit',
-      'mark'
+      'mark',
+      'getUser'
     ]),
     editTodo (todo) {
       this.editedTodo = todo
@@ -63,6 +65,9 @@ export default {
         this.removeTodo(todo)
       }
     }
+  },
+  updated () {
+    this.getUser()
   }
 }
 </script>

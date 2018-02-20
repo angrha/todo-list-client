@@ -9,7 +9,7 @@
             class="in-td"
             placeholder="What needs to be done?"
             autofocus>
-            <i class="el-icon-edit el-input__icon" slot="suffix"></i>
+            <i class="el-icon-document el-input__icon" slot="suffix"></i>
           </el-input>
         </el-form-item>
       </el-form>

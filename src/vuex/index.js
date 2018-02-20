@@ -1,16 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-// import router from '../router'
+import swal from 'sweetalert'
+import router from '../router'
 
 Vue.use(Vuex)
 
-// const fancyTodo = 'auth-fancy-todo'
+const fancyTodo = 'auth-fancy-todo'
 const baseUrl = 'http://localhost:3000/api'
 
 const store = new Vuex.Store({
   state: {
-    todos: []
+    todos: [],
+    login: false,
+    user: null
   },
   mutations: {
     postTodo (state, payload) {
@@ -24,6 +27,13 @@ const store = new Vuex.Store({
         return x === payload
       })
       state.todos.splice(index, 1)
+    },
+    isLogin (state, payload) {
+      state.login = payload
+    },
+    loginUser (state, payload) {
+      state.user = payload
+      console.log(state.user)
     }
   },
   actions: {
@@ -70,14 +80,12 @@ const store = new Vuex.Store({
         })
     },
     mark ({ commit }, payload) {
-      console.log(payload.status)
       let stat = ''
       if (payload.status) {
         stat = 'completed'
       } else {
         stat = 'uncompleted'
       }
-      console.log('masuk ke marrrrk', stat)
       axios.put(baseUrl + `/todos/${payload._id}/mark`, {
         status: stat
       })
@@ -87,6 +95,37 @@ const store = new Vuex.Store({
         .catch(err => {
           console.log(err)
         })
+    },
+    signin ({ commit }, payload) {
+      axios.post(baseUrl + '/users/signin', payload)
+        .then(response => {
+          localStorage.setItem(fancyTodo, response.data.token)
+          commit('isLogin', true)
+          commit('loginUser', response.data.user)
+        })
+        .catch(err => {
+          swal({
+            text: `${err.response.data.message}`,
+            icon: 'error',
+            button: 'next'
+          })
+        })
+    },
+    checkLogin ({ commit }) {
+      if (localStorage.getItem(fancyTodo)) {
+        commit('isLogin', true)
+      }
+    },
+    signout ({ commit }) {
+      console.log('masuk sini')
+      localStorage.clear()
+      commit('isLogin', false)
+      router.push({name: 'Home'})
+      swal({
+        text: 'you have logged out',
+        icon: 'info',
+        button: 'next'
+      })
     }
   }
 })

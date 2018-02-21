@@ -39,7 +39,7 @@
           </el-menu-item-group>
           <div class="flx-btn">
             <el-button
-              @click="signin(formData)"
+              @click="setSignin(formData)"
               type="submit"
               size="small"
               class="btn-log">
@@ -92,7 +92,7 @@
           </el-menu-item-group>
           <div class="flx-btn">
             <el-button
-              @click="signup(formData)"
+              @click="register(formData)"
               type="submit"
               size="small"
               class="btn-log">
@@ -144,7 +144,6 @@ export default {
   },
   data () {
     return {
-      labelPosition: 'left',
       formData: {
         username: '',
         email: '',
@@ -175,6 +174,23 @@ export default {
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath)
+    },
+    setSignin (user) {
+      this.signin(user)
+        .then(() => {
+          this.formData.email = ''
+          this.formData.password = ''
+        })
+        .catch(err => console.log(err))
+    },
+    register (user) {
+      this.signup(user)
+        .then(() => {
+          this.formData.username = ''
+          this.formData.email = ''
+          this.formData.password = ''
+        })
+        .catch(err => console.log(err))
     }
   },
   created () {
@@ -182,9 +198,6 @@ export default {
     this.checkLogin()
     this.getUser()
     this.uniqueFeature()
-    this.formData.username = ''
-    this.formData.email = ''
-    this.formData.password = ''
   }
 }
 </script>

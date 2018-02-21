@@ -41,6 +41,7 @@ const store = new Vuex.Store({
     loginUser (state, payload) {
       state.login = true
       state.user = payload
+      console.log(state.user.id, 'ini loginuser mutat')
     },
     sendQuote (state, payload) {
       state.unique = payload
@@ -61,19 +62,29 @@ const store = new Vuex.Store({
         .catch(err => {
           swal({
             title: 'need login first',
-            text: `${err.response.data.message}`,
+            text: `${err}`,
             icon: 'warning',
             button: 'next'
           })
           console.log(err)
         })
     },
-    findAllTodos ({ commit }) {
-      axios.get(baseUrl + '/todos')
+    findUserTodos ({commit, state}) {
+      console.log(state.user.id, 'ini find user todos')
+      axios.get(baseUrl + `/todos`, {
+        headers: {
+          token: localStorage.getItem(fancyTodo)
+        }
+      })
         .then(response => {
           commit('getTodo', response.data.todos)
         })
         .catch(err => {
+          swal({
+            text: `${err.response.data.message}`,
+            icon: 'error',
+            button: 'next'
+          })
           console.log(err)
         })
     },
@@ -107,6 +118,22 @@ const store = new Vuex.Store({
       })
         .then(response => {
           console.log(response.data, 'ini axios')
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    finishEditTitle ({ commit }, payload) { // middleware on
+      payload.title = payload.title.trim()
+      axios.put(baseUrl + `/todos/${payload._id}`, {
+        title: payload.title
+      }, {
+        headers: {
+          token: localStorage.getItem(fancyTodo)
+        }
+      })
+        .then(response => {
+          console.log(response.data, 'finish edit title')
         })
         .catch(err => {
           console.log(err)

@@ -1,9 +1,18 @@
 <template>
   <div v-if="login">
     <el-container class="flx-cnt">
-      <el-card class="box-card" v-for="(todo, index) in todos" :key="todo._id">
+      <el-card class="box-card" v-for="todo in todos" :key="todo._id">
         <div slot="header" class="clearfix">
-          <span >{{ todo.title }} - {{ index }}</span>
+          <span @dblclick="editTitle" v-if="!editedTitle">{{ todo.title }}</span>
+          <el-input type="text"
+            v-if="editedTitle"
+            v-model="todo.title"
+            @blur="doneEditTitle(todo)"
+            @keyup.enter.native="doneEditTitle(todo)"
+            style="width: 80%;"
+            clearable>
+            <i class="el-icon-edit el-input__icon" slot="suffix"></i>
+          </el-input>
           <el-button class="el-icon-close" type="text" @click="removeTodo(todo)"> </el-button>
         </div>
         <div :class="{complete: todo.status}" v-if="!editedTodo">
@@ -36,7 +45,8 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      editedTodo: null
+      editedTodo: null,
+      editedTitle: null
     }
   },
   computed: {
@@ -49,6 +59,7 @@ export default {
     ...mapActions([
       'removeTodo',
       'finishEdit',
+      'finishEditTitle',
       'mark'
     ]),
     editTodo (todo) {
@@ -62,6 +73,20 @@ export default {
       this.editedTodo = null
       if (!todo.todos) {
         this.removeTodo(todo)
+      }
+    },
+    editTitle (todo) {
+      this.editedTitle = todo
+    },
+    doneEditTitle (todo) {
+      if (!this.editedTitle) {
+        return
+      }
+      this.finishEditTitle(todo)
+      this.editedTitle = null
+      if (!todo.title || todo.title === '') {
+        todo.title = 'title'
+        this.finishEditTitle(todo)
       }
     }
   }

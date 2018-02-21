@@ -38,11 +38,16 @@ export default {
   },
   methods: {
     ...mapActions([
-      'addTodo'
+      'addTodo',
+      'uniqueFeature'
     ]),
-    submitTodo (e) {
-      this.addTodo(e)
-      this.newTodo = ''
+    submitTodo (todo) {
+      this.addTodo(todo)
+        .then(() => {
+          this.newTodo = ''
+          this.uniqueFeature()
+        })
+        .catch(err => console.log(err))
     }
   }
 }

@@ -188,11 +188,6 @@ export default {
         .catch(err => console.log(err))
     }
   },
-  watch: {
-    user: function () {
-      this.findUserTodos(this.user.id)
-    }
-  },
   created () {
     this.checkLogin()
     this.getUser()

@@ -109,11 +109,53 @@ export default {
     ...mapActions([
       'signin',
       'signup',
-    ])
+      'checkLogin',
+      'getUser',
+      'findUserTodos'
+    ]),
+    setSignin (user) {
+      this.signin(user)
+        .then(() => {
+          this.formData.email = ''
+          this.formData.password = ''
+        })
+        .catch(err => console.log(err))
+    },
+    register (user) {
+      this.signup(user)
+        .then(() => {
+          this.formData.username = ''
+          this.formData.email = ''
+          this.formData.password = ''
+        })
+        .catch(err => console.log(err))
+    }
+  },
+  created () {
+    this.checkLogin()
+    this.getUser()
+  },
+  mounted () {
+    this.findUserTodos()
   }
 }
 </script>
 
-<style>
+<style scoped>
+.el-input {
+  width: 90%;
+}
 
+.flx-btn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: 2%;
+  margin-right: 5%;
+}
+
+.btn-log {
+  background-color: #F56C6C;
+  color: #fff;
+}
 </style>

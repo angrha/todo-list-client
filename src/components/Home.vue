@@ -194,8 +194,8 @@ export default {
     }
   },
   created () {
-    this.getUser()
     this.checkLogin()
+    this.getUser()
     this.uniqueFeature()
   },
   mounted () {

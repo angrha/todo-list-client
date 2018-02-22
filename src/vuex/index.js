@@ -23,18 +23,6 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    postTodo (state, payload) {
-      state.todos.push(payload)
-    },
-    getTodo (state, payload) {
-      state.todos = payload
-    },
-    destroyTodo (state, payload) {
-      let index = state.todos.findIndex(x => {
-        return x === payload
-      })
-      state.todos.splice(index, 1)
-    },
     isLogin (state, payload) {
       state.login = payload
     },
@@ -42,6 +30,18 @@ const store = new Vuex.Store({
       state.login = true
       state.user = payload
       console.log(state.user.id, 'ini loginuser mutat')
+    },
+    postTodo (state, payload) {
+      state.todos.push(payload)
+    },
+    destroyTodo (state, payload) {
+      let index = state.todos.findIndex(x => {
+        return x === payload
+      })
+      state.todos.splice(index, 1)
+    },
+    getTodo (state, payload) {
+      state.todos = payload
     },
     sendQuote (state, payload) {
       state.unique = payload
@@ -64,25 +64,6 @@ const store = new Vuex.Store({
             title: 'need login first',
             text: `${err}`,
             icon: 'warning',
-            button: 'next'
-          })
-          console.log(err)
-        })
-    },
-    findUserTodos ({commit, state}) {
-      console.log(state.user.id, 'ini find user todos')
-      axios.get(baseUrl + `/todos`, {
-        headers: {
-          token: localStorage.getItem(fancyTodo)
-        }
-      })
-        .then(response => {
-          commit('getTodo', response.data.todos)
-        })
-        .catch(err => {
-          swal({
-            text: `${err.response.data.message}`,
-            icon: 'error',
             button: 'next'
           })
           console.log(err)
@@ -206,7 +187,6 @@ const store = new Vuex.Store({
         })
     },
     signout ({ commit }) {
-      console.log('masuk sini')
       localStorage.clear()
       commit('isLogin', false)
       router.push({name: 'Home'})
@@ -225,6 +205,25 @@ const store = new Vuex.Store({
             icon: 'success',
             button: 'next'
           })
+        })
+        .catch(err => {
+          swal({
+            text: `${err.response.data.message}`,
+            icon: 'error',
+            button: 'next'
+          })
+          console.log(err)
+        })
+    },
+    findUserTodos ({commit, state}) {
+      console.log(state.user.id, 'ini find user todos')
+      axios.get(baseUrl + `/todos/${state.user.id}`, {
+        headers: {
+          token: localStorage.getItem(fancyTodo)
+        }
+      })
+        .then(response => {
+          commit('getTodo', response.data.todos)
         })
         .catch(err => {
           swal({
